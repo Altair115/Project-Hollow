@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
+    [AddComponentMenu("Mythirial/Dialogue Manager")]
     public class DialogueManager : Singleton<DialogueManager>
     {
         public Text NameText;

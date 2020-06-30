@@ -11,7 +11,6 @@ namespace Assets.Scripts
 
         public void TriggerDialogue()
         {
-            //FindObjectOfType<DialogueManager>().StartDialogue(Dialogue);
             DialogueManager.Instance.StartDialogue(Dialogue);
         }
     }
