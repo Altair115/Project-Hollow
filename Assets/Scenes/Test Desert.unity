@@ -877,7 +877,8 @@ MonoBehaviour:
   dstFromTarget: 5
   dstFactor: 0.8
   rotationSmoothTime: 0.12
-  dstMinMax: {x: 1, y: 5}
+  depthSmoothTime: 1
+  dstMax: 5
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0
