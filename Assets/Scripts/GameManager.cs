@@ -17,15 +17,17 @@ namespace Assets.Scripts
     public class GameManager : Singleton<GameManager>
     {
         public GameObject LoadingScreen;
-        public Slider ProgressBar;
+        public Slider ProgressBar; //port to custom Linear Bar
         public TextMeshProUGUI LoadingText;
 
         //Optional Settings
+        [Header("Optional Settings")]
+        [Header("Background Randomization" , order = 1)]
         //Background Changing
         //public Sprite[] Backgrounds;
         //public Image Background;
 
-        //Tips
+        [Header("Tips Display",order = 2)]
         public TextMeshProUGUI TipsText;
         public CanvasGroup AlphaCanvas;
         [SerializeField][TextArea(3, 10)] private string[] _tips;
@@ -107,7 +109,7 @@ namespace Assets.Scripts
             while (LoadingScreen.activeInHierarchy)
             {
                 yield return new WaitForSeconds(3f);
-                AlphaCanvas.alpha = 0f;
+                LeanTween.alphaCanvas(AlphaCanvas, 0, 0.5f);
                 yield return new WaitForSeconds(.5f);
                 _tipCount++;
 
@@ -115,7 +117,7 @@ namespace Assets.Scripts
                     _tipCount = 0;
 
                 TipsText.text = _tips[_tipCount];
-                AlphaCanvas.alpha = 1;
+                LeanTween.alphaCanvas(AlphaCanvas, 1, 0.5f);
             }
         }
     }
