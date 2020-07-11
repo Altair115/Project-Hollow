@@ -3,6 +3,7 @@
 namespace Assets.Scripts
 {
     [AddComponentMenu("Mythirial Test/Camera Test")]
+    [RequireComponent(typeof(Camera))]
     public class CameraTest : MonoBehaviour
     {
         [SerializeField]
@@ -10,10 +11,12 @@ namespace Assets.Scripts
         [SerializeField]
         private const float Y_ANGLE_MAX = 50.0f;
 
+        Camera cam;
+
         public bool lockCursor;
         public Transform lookAt;
         public float dstFromTarget = 5f;
-        public float dstFactor = .8f;
+        public float dstFactor = .5f;
 
         public float rotationSmoothTime = .12f;
 		public float depthSmoothTime = 1;
@@ -30,6 +33,7 @@ namespace Assets.Scripts
 
         private void Awake()
         {
+            cam = GetComponent<Camera>();
             dollyDir = transform.localPosition.normalized;
             dstFromTarget = transform.localPosition.magnitude;
 
@@ -58,20 +62,22 @@ namespace Assets.Scripts
             currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(currentY, currentX), ref rotationSmoothVelocity, rotationSmoothTime);
             transform.eulerAngles = currentRotation;
 
-            transform.position = lookAt.position - transform.forward * Mathf.Clamp((dstFromTarget * dstFactor), 0, dstMax);
+            transform.position = lookAt.position - transform.forward * Mathf.Clamp(dstFromTarget, 0, dstMax);
             //transform.localPosition = Vector3.Lerp(transform.localPosition, dollyDir * dstFromTarget, Time.deltaTime * rotationSmoothTime);
         }
 
         /// <summary>
-        /// Detecting collision on the camera side
+        /// Detecting collision for the camera to protect it from clipping through walls
         /// </summary>
+        Vector3 cam_Direction;
         void CollisionDetect()
         {
-            Vector3 desiredCameraPos = lookAt.position - transform.forward * dstFromTarget;//lookAt.TransformPoint(lookAt.position - transform.position * dstMinMax.y);
-            RaycastHit hit;
-
-            if (Physics.Linecast(lookAt.position, desiredCameraPos, out hit))
-                dstFromTarget = hit.distance;
+            cam_Direction = -(lookAt.position - transform.position);
+            RaycastHit cam_colission;
+            
+            if (Physics.SphereCast(lookAt.position, dstFactor, cam_Direction, out cam_colission, dstFromTarget)) {
+                dstFromTarget = cam_colission.distance;
+            }
             else
                 dstFromTarget = Mathf.Lerp(dstFromTarget, dstMax, Time.deltaTime * depthSmoothTime);
         }
