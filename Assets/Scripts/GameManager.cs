@@ -30,7 +30,7 @@ namespace Assets.Scripts
         [Header("Tips Display",order = 2)]
         public TextMeshProUGUI TipsText;
         public CanvasGroup AlphaCanvas;
-        [SerializeField][TextArea(3, 10)] private string[] _tips;
+        [SerializeField][TextArea(3, 10)] private string[] _tips = null;
 
         private GameManager() { }
 
